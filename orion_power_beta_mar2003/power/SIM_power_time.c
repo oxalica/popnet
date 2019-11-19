@@ -40,6 +40,7 @@
  *------------------------------------------------------------*/
 
 #include <math.h>
+#include <stdio.h>
 #include <assert.h>
 #include "SIM_power.h"
 #include "SIM_power_array_internal.h"
@@ -494,7 +495,7 @@ double inrisetime;
 
 /* Data array bitline: (see section 6.4 in tech report) */
 double SIM_power_bitline_delay(C,A,B,Ndwl,Ndbl,Nspd,inrisetime,outrisetime)
-int C,A,B,Ndbl,Nspd;
+int C,A,B,Ndwl,Ndbl,Nspd;
 double inrisetime,*outrisetime;
 {
         double Tbit,Cline,Ccolmux,Rlineb,r1,r2,c1,c2,a,b,c;
@@ -548,7 +549,7 @@ double inrisetime,*outrisetime;
 
 /* Tag array bitline: (see section 6.4 in tech report) */
 double SIM_power_bitline_tag_delay(C,A,B,Ntwl,Ntbl,Ntspd,inrisetime,outrisetime)
-int C,A,B,Ntbl,Ntspd;
+int C,A,B,Ntwl,Ntbl,Ntspd;
 double inrisetime,*outrisetime;
 {
         double Tbit,Cline,Ccolmux,Rlineb,r1,r2,c1,c2,a,b,c;

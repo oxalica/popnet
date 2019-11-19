@@ -340,7 +340,7 @@ int FUNC(SIM_router_power_init, SIM_power_router_info_t *info, SIM_power_router_
 /* ==================== buffer (wrapper functions) ==================== */
 
 /* record read data activity */
-inline int FUNC(SIM_buf_power_data_read, SIM_power_array_info_t *info, SIM_power_array_t *arr, LIB_Type_max_uint data)
+int FUNC(SIM_buf_power_data_read, SIM_power_array_info_t *info, SIM_power_array_t *arr, LIB_Type_max_uint data)
 {
   /* precharge */
   SIM_array_pre_record(&arr->data_bitline_pre, info->blk_bits);
@@ -354,7 +354,7 @@ inline int FUNC(SIM_buf_power_data_read, SIM_power_array_info_t *info, SIM_power
 
 
 /* record write data bitline and memory cell activity */
-inline int FUNC(SIM_buf_power_data_write, SIM_power_array_info_t *info, SIM_power_array_t *arr, char *data_line, char *old_data, char *new_data)
+int FUNC(SIM_buf_power_data_write, SIM_power_array_info_t *info, SIM_power_array_t *arr, char *data_line, char *old_data, char *new_data)
 {
   /* drive the wordline */
   SIM_power_array_dec(info, arr, NULL, 0, SIM_ARRAY_WRITE);
