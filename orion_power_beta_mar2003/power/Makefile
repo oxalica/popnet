@@ -11,7 +11,7 @@ CC     = gcc
 # for general testing
 DEFS   = -DPOWER_TEST -DPARM_TECH_POINT=18 -DVdd=1.8 -DPARM_Freq=1e9
 
-CFLAGS = -I. -I../library $(DEFS)  -Wno-deprecated -g 
+CFLAGS = -I. -I../library $(DEFS)  -Wno-deprecated -O3
 #CFLAGS = -I. -I../library $(DEFS) -g
 AR     = ar
 RANLIB = ranlib
