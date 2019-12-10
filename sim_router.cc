@@ -575,6 +575,30 @@ void sim_router_template::flit_outbuffer()
 
 }
 
+#include <unordered_map>
+#include <cstdint>
+class RouteLogger {
+	unordered_map<uint64_t, uint64_t> cnt;
+
+public:
+	RouteLogger() {}
+
+	~RouteLogger() {
+		for (auto const &p: cnt) {
+			std::cerr
+				<< (p.first >> 32) << ' '
+				<< (p.first & 0xFFFFFFFF) << ' '
+				<< p.second << '\n';
+		}
+	}
+
+	void log(size_t n, add_type const &pos) {
+		assert(pos.size() == 2);
+		++cnt[(uint64_t)pos[0] << 32 | pos[1]];
+	}
+
+} route_logger;
+
 //***************************************************************************//
 //flit traversal through the link stage
 void sim_router_template::flit_traversal(long i)
@@ -590,7 +614,7 @@ void sim_router_template::flit_traversal(long i)
 			if(wire_add_t[(i-1) / 2] == ary_size_) {
 				wire_add_t[(i-1) / 2] = 0;
 			}
-		}else {
+		} else {
 			wire_pc_t = i + 1;
 			wire_add_t[(i - 1) / 2] --;
 			if(wire_add_t[(i-1) / 2] == -1) {
@@ -598,6 +622,9 @@ void sim_router_template::flit_traversal(long i)
 			}
 		}
 		flit_template flit_t(output_module_.get_flit(i));
+
+		route_logger.log(2, wire_add_t);
+
 		VC_type outadd_t = output_module_.get_add(i);
 		power_module_.power_link_traversal(i, flit_t.data());
 

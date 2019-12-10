@@ -2,3 +2,7 @@
 *.a
 popnet
 
+/.vscode
+/nets
+__pycache__
+*.pyc
