@@ -8,7 +8,7 @@
 using namespace std;
 
 enum mess_type {EVG_, ROUTER_, WIRE_, CREDIT_};
-enum routing_type {XY_ , TXY_ };
+enum routing_type {XY_ , TXY_, TURN_XY_RANDOM_ };
 enum VC_state_type {INIT_, ROUTING_, VC_AB_, SW_AB_, SW_TR_, HOME_};
 enum flit_type {HEADER_, BODY_, TAIL_};
 enum vc_share_type {SHARE_, MONO_};

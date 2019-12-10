@@ -88,6 +88,10 @@ sim_router_template::sim_router_template(long a, long b, long c,
 		curr_algorithm = & sim_router_template::TXY_algorithm;
 		break;
 
+		case TURN_XY_RANDOM_:
+		curr_algorithm = & sim_router_template::TURN_XY_RANDOM_algorithm;
+		break;
+
 		default :
 		Sassert(0);
 		break;
@@ -579,6 +583,22 @@ void sim_router_template::flit_outbuffer()
 //flit traversal through the link stage
 void sim_router_template::flit_traversal(long i)
 {
+	Sassert(ary_size_ % 2 == 0);
+
+
+	// To next position
+	//    1 --- 3 --- 5 -|
+	// 0 --- 2 --- 4 ----|
+	// [0, 2, 4, 5, 3] -> [2, 4, 5, 3, 1]
+	auto to_next = [&](long &i) {
+		if (i % 2 == 1)
+			i -= 2;
+	    else if (i < ary_size_ - 2)
+			i += 2;
+		else
+			i++;
+	};
+
     // 保存模拟时间用以计算耗时
 	time_type event_time = mess_queue::m_pointer().current_time();
 	if(output_module_.outbuffers(i).size() > 0) {
@@ -590,17 +610,10 @@ void sim_router_template::flit_traversal(long i)
 		long wire_pc_t ;
 		if((i % 2) == 0) {
 			wire_pc_t = i - 1;
-			wire_add_t[(i - 1) / 2] ++;
-			if(wire_add_t[(i-1) / 2] == ary_size_) {
-				wire_add_t[(i-1) / 2] = 0;
-			}
-		} else {
+		}else {
 			wire_pc_t = i + 1;
-			wire_add_t[(i - 1) / 2] --;
-			if(wire_add_t[(i-1) / 2] == -1) {
-				wire_add_t[(i-1) / 2] = ary_size_ - 1;
-			}
 		}
+		to_next(wire_add_t[(i - 1) / 2]);
 
         // 创建 flit_template 对象
 		flit_template flit_t(output_module_.get_flit(i));

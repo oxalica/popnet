@@ -91,6 +91,52 @@ void sim_router_template::XY_algorithm(const add_type & des_t,
 		}
 	}
 }
+
+//***************************************************************************//
+void sim_router_template::TURN_XY_RANDOM_algorithm(const add_type & des_t,
+		const add_type & sor_t, long s_ph, long s_vc) {
+	Sassert(ary_size_ % 2 == 0);
+    
+	// Convert position to order index
+	//    1 --- 3 --- 5 -|
+	// 0 --- 2 --- 4 ----|
+	// [0, 2, 4, 5, 3, 1] -> [0, 1, 2, 3, 4, 5]
+	auto to_ord = [&](int i) {
+		return i % 2 == 0 ? i / 2 : ary_size_ - 1 - i / 2;
+	};
+
+	long xoffset = to_ord(des_t[0]) - to_ord(address_[0]);
+	long yoffset = to_ord(des_t[1]) - to_ord(address_[1]);
+
+	if (yoffset != 0) {
+		if (xoffset == 0 || SRGen::wrg().flat_l(0, 2) == 0) {
+			if(yoffset < 0) {
+				input_module_.add_routing(s_ph, s_vc, VC_type(3,0));
+				input_module_.add_routing(s_ph, s_vc, VC_type(3,1));
+				input_module_.add_routing(s_ph, s_vc, VC_type(3,2));
+				input_module_.add_routing(s_ph, s_vc, VC_type(3,3));
+			} else {
+				input_module_.add_routing(s_ph, s_vc, VC_type(4,0));
+				input_module_.add_routing(s_ph, s_vc, VC_type(4,1));
+				input_module_.add_routing(s_ph, s_vc, VC_type(4,2));
+				input_module_.add_routing(s_ph, s_vc, VC_type(4,3));
+			}
+			return;
+		}
+	}
+
+	if(xoffset < 0) {
+		input_module_.add_routing(s_ph, s_vc, VC_type(1,0));
+		input_module_.add_routing(s_ph, s_vc, VC_type(1,1));
+		input_module_.add_routing(s_ph, s_vc, VC_type(1,2));
+		input_module_.add_routing(s_ph, s_vc, VC_type(1,3));
+	}else if (xoffset > 0) {
+		input_module_.add_routing(s_ph, s_vc, VC_type(2,0));
+		input_module_.add_routing(s_ph, s_vc, VC_type(2,1));
+		input_module_.add_routing(s_ph, s_vc, VC_type(2,2));
+		input_module_.add_routing(s_ph, s_vc, VC_type(2,3));
+	}
+}
 			
 //***************************************************************************//
 //only two-dimension is supported

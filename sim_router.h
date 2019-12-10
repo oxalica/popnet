@@ -314,6 +314,8 @@ class sim_router_template {
 				long s_ph, long s_vc);
 		void TXY_algorithm(const add_type & des_t, 
 				const add_type & sor_t, long s_ph, long s_vc);
+		void TURN_XY_RANDOM_algorithm(const add_type & des_t, 
+				const add_type & sor_t, long s_ph, long s_vc);
 
 		VC_type vc_selection(long a, long b);
 		void vc_arbitration();
