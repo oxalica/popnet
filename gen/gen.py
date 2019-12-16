@@ -64,6 +64,7 @@ def save_plot(
     assert len(speed) == len(finished) == len(delay)
     n = len(hot)
     assert all(len(row) == n for row in hot)
+    speed = [s * N * N for s in speed] # To real packet/cycle
 
     fig, ax1 = plt.subplots()
     color = 'tab:red'
