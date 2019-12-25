@@ -64,30 +64,13 @@ void sim_router_template::TXY_algorithm(const add_type & des_t,
 void sim_router_template::XY_algorithm(const add_type & des_t,
 		const add_type & sor_t, long s_ph, long s_vc)
 {
-	long xoffset = des_t[0] - address_[0];
-	long yoffset = des_t[1] - address_[1];
-
-	if(yoffset < 0) {
-		input_module_.add_routing(s_ph, s_vc, VC_type(3,0));
-		input_module_.add_routing(s_ph, s_vc, VC_type(3,1));
-		input_module_.add_routing(s_ph, s_vc, VC_type(3,2));
-		input_module_.add_routing(s_ph, s_vc, VC_type(3,3));
-	}else if(yoffset > 0) {
-		input_module_.add_routing(s_ph, s_vc, VC_type(4,0));
-		input_module_.add_routing(s_ph, s_vc, VC_type(4,1));
-		input_module_.add_routing(s_ph, s_vc, VC_type(4,2));
-		input_module_.add_routing(s_ph, s_vc, VC_type(4,3));
-	}else {
-		if(xoffset < 0) {
-			input_module_.add_routing(s_ph, s_vc, VC_type(1,0));
-			input_module_.add_routing(s_ph, s_vc, VC_type(1,1));
-			input_module_.add_routing(s_ph, s_vc, VC_type(1,2));
-			input_module_.add_routing(s_ph, s_vc, VC_type(1,3));
-		}else if (xoffset > 0) {
-			input_module_.add_routing(s_ph, s_vc, VC_type(2,0));
-			input_module_.add_routing(s_ph, s_vc, VC_type(2,1));
-			input_module_.add_routing(s_ph, s_vc, VC_type(2,2));
-			input_module_.add_routing(s_ph, s_vc, VC_type(2,3));
+	for (int i = 0; i < cube_size_; ++i) {
+		if (des_t[i] < address_[i]) {
+			input_module_.add_routing(s_ph, s_vc, VC_type(1 + i * 2, 0));
+			return;
+		} else if (des_t[i] > address_[i]) {
+			input_module_.add_routing(s_ph, s_vc, VC_type(2 + i * 2, 1));
+			return;
 		}
 	}
 }

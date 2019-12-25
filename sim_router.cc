@@ -50,13 +50,14 @@ sim_router_template::sim_router_template():
 //a : physical ports, b: vc number, c: buffer size,  d: output
 //buffer size, e: address  f: ary_size_ g: flit_size_
 sim_router_template::sim_router_template(long a, long b, long c,
-	long d, const add_type & e, long f, long g):
+	long d, const add_type & e, long f, long g, long cube_size):
 	address_(e),
 	input_module_(a, b),
 	output_module_(a, b, c, d),
 	power_module_(a, b, g),
 	init_data_(),
 	ary_size_(f),
+	cube_size_(cube_size),
 	flit_size_(g),
 	physic_ports_(a),
 	vc_number_(b),
